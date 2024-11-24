@@ -13,7 +13,7 @@ if (argv.length != 3){
     const absolutePath = path.resolve(process.cwd(), relativePath);
 
     if (!existsSync(absolutePath)){
-        console.log("Error: The specified path was not found.")
+        console.error("Error: The specified path was not found.")
         process.exit(1)
     }
     else{
@@ -22,11 +22,18 @@ if (argv.length != 3){
         });
         for (const file of files){
             const stats = await stat(path.join(absolutePath, file.name))
+
+            const lastModifiedTime = new Date(stats.mtime).toLocaleString();
+            const type = file.isDirectory() ? "DIR." : "FILE"
+            const size = file.isFile() ? `${stats.size} bytes` : null
+
             console.log(
-                file.isDirectory() ? "DIR." : "FILE",
-                " - ",
+                lastModifiedTime,
+                ' - ',
+                type,
+                ' - ',
                 file.name,
-                file.isFile() ? ' -  ' + stats.size + 'ko' : ''
+                size ? ' - ' + size : ''
             )
         }
     }
