@@ -26,23 +26,18 @@ else {
             withFileTypes: true
         });
 
-        console.log(`\nContent of ${chalk.blue.underline(absolutePath)} :\n`)
+        console.log(`\nContent of ${chalk.blue.bold.underline(absolutePath)} :\n`)
 
         for (const file of files){
             const stats = await stat(path.join(absolutePath, file.name))
 
             const lastModifiedTime = new Date(stats.mtime).toLocaleString();
-            const type = file.isDirectory() ? "DIR." : "FILE"
-            const size = file.isFile() ? `${stats.size} bytes` : null
+            const type = file.isDirectory() ? "DIR." : "FILE";
+            const fileName = file.isDirectory() ? chalk.blue(file.name.padEnd(20)) : file.name.padEnd(20);
+            const size = file.isFile() ? `${stats.size} B` : '-';
 
-            console.log(
-                lastModifiedTime,
-                ' - ',
-                type,
-                ' - ',
-                file.name,
-                size ? ' - ' + size : ''
-            )
+            //output
+            console.log(`${lastModifiedTime}    ${chalk.bold(type)}    ${fileName}    ${size}`)
         }
     }
 }
