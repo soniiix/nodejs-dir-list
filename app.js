@@ -4,9 +4,10 @@ import { existsSync } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
 import chalk from 'chalk';
 
-//chalk themes
+// Chalk custom variables
 const error = chalk.red.bold;
 const warning = chalk.yellow.bold;
+const info = chalk.blue.bold.underline;
 
 if (argv.length != 3){
     argv.length < 3
@@ -23,27 +24,32 @@ else {
         process.exit(1)
     }
     else {
-        const files = await readdir(absolutePath, {
-            withFileTypes: true
-        });
+        try {
+            const files = await readdir(absolutePath, {
+                withFileTypes: true
+            });
 
-        if (files.length == 0){
-            console.log(warning("Warning: The specified directory is empty."))
-        }
-        else {
-            console.log(`\nContent of ${chalk.blue.bold.underline(absolutePath)} :\n`)
+            if (files.length == 0){
+                console.log(warning("Warning: The specified directory is empty."))
+            }
+            else {
+                console.log(`\nContent of ${info(absolutePath)} :\n`)
 
-            for (const file of files){
-                const stats = await stat(path.join(absolutePath, file.name))
-
-                const lastModifiedTime = new Date(stats.mtime).toLocaleString();
-                const type = file.isDirectory() ? "DIR." : "FILE";
-                const fileName = file.isDirectory() ? chalk.blue(file.name.padEnd(20)) : file.name.padEnd(20);
-                const size = file.isFile() ? `${stats.size} B` : '-';
-
-                //output
-                console.log(`${lastModifiedTime}    ${chalk.bold(type)}    ${fileName}    ${size}`)
+                for (const file of files){
+                    const stats = await stat(path.join(absolutePath, file.name))
+    
+                    const lastModifiedTime = new Date(stats.mtime).toLocaleString();
+                    const type = file.isDirectory() ? "DIR." : "FILE";
+                    const fileName = file.isDirectory() ? chalk.blue(file.name.padEnd(20)) : file.name.padEnd(20);
+                    const size = file.isFile() ? `${stats.size} B` : '-';
+    
+                    //output
+                    console.log(`${lastModifiedTime}    ${chalk.bold(type)}    ${fileName}    ${size}`)
+                }
             }
         }
+        catch (err){
+            console.error(error(`Error: Unable to read directory. ${err.message})`));
+        }    
     }
 }
