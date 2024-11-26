@@ -37,21 +37,33 @@ else {
             else {
                 console.log(`\nContent of ${info(absolutePath)} :\n`)
 
+                
+
+                // Adapt the minimum padding according to the file with the longest name
+                let longestFileLength = files.reduce((max, file) => Math.max(max, file.name.length), 0) + 2;        
+                
+                // Head table
+                console.log(`Date                   Type    Name ${' '.repeat(longestFileLength-2)} Size`);
+                console.log('-'.repeat(31 + longestFileLength + 15));
+
                 for (const file of files){
                     const stats = await stat(path.join(absolutePath, file.name))
     
                     const lastModifiedTime = new Date(stats.mtime).toLocaleString();
                     const type = file.isDirectory() ? "DIR." : "FILE";
-                    const fileName = file.isDirectory() ? chalk.blue(file.name.padEnd(20)) : file.name.padEnd(20);
-                    const size = file.isFile() ? `${stats.size} B` : '-';
+                    const fileName = file.isDirectory()
+                        ? chalk.blue(file.name.padEnd(longestFileLength))
+                        : file.name.padEnd(longestFileLength);
+                    const size = file.isFile() ? stats.size : '--';
     
-                    //output
-                    console.log(`${lastModifiedTime}    ${chalk.bold(type)}    ${fileName}    ${size}`)
+                    // Add a line to the output
+                    console.log(`${lastModifiedTime}    ${chalk.gray(type)}    ${fileName}    ${size}`)
                 }
             }
         }
         catch (err){
             console.error(error(`Error: Unable to read directory. ${err.message})`));
+            process.exit(1);
         }    
     }
 }
