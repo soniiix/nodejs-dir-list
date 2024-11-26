@@ -1,8 +1,9 @@
 {
-  "name": "listdir",
+  "name": "@soniix/listdir",
   "version": "1.0.0",
   "description": "A command line tool to list everything in a specified directory.",
   "main": "cli.js",
+  "type": "module",
   "bin": {
     "listdir": "./cli.js"
   },
