@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { argv } from 'node:process';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
@@ -33,7 +35,7 @@ else {
                 console.log(warning("Warning: The specified directory is empty."))
             }
             else {
-                console.log(`\nContent of ${info(absolutePath)} :\n`)
+                //console.log(`\nContent of ${info(absolutePath)} :\n`)
 
                 for (const file of files){
                     const stats = await stat(path.join(absolutePath, file.name))
