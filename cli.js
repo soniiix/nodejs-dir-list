@@ -35,7 +35,7 @@ else {
                 console.log(warning("Warning: The specified directory is empty."))
             }
             else {
-                //console.log(`\nContent of ${info(absolutePath)} :\n`)
+                console.log(`\nContent of ${info(absolutePath)} :\n`)
 
                 for (const file of files){
                     const stats = await stat(path.join(absolutePath, file.name))
