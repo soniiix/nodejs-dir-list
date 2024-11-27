@@ -35,30 +35,51 @@ else {
                 console.log(warning("Warning: The specified directory is empty."))
             }
             else {
-                console.log(`\nContent of ${info(absolutePath)} :\n`)
-
-                
-
-                // Adapt the minimum padding according to the file with the longest name
-                let longestFileLength = files.reduce((max, file) => Math.max(max, file.name.length), 0) + 2;        
-                
-                // Head table
-                console.log(`Date                   Type    Name ${' '.repeat(longestFileLength-2)} Size`);
-                console.log('-'.repeat(31 + longestFileLength + 15));
+                let longestFile = 0;
+                let longestSize = 0;
+                let dataOutput = []
 
                 for (const file of files){
                     const stats = await stat(path.join(absolutePath, file.name))
-    
-                    const lastModifiedTime = new Date(stats.mtime).toLocaleString();
+
+                    // Adjust columns width according to the longest values
+                    longestFile =  Math.max(longestFile, file.name.length);
+                    longestSize =  Math.max(longestSize, stats.size.toString().length);
+
+                    // Retrieve data for each file
+                    const lastModified = new Date(stats.mtime).toLocaleString([], {
+                        "year": "numeric",
+                        "month": "numeric",
+                        "day": "numeric",
+                        "hour": "2-digit",
+                        "minute": "2-digit"
+                    });
                     const type = file.isDirectory() ? "DIR." : "FILE";
+                    const size = file.isFile() ? stats.size.toString() : '-';
                     const fileName = file.isDirectory()
-                        ? chalk.blue(file.name.padEnd(longestFileLength))
-                        : file.name.padEnd(longestFileLength);
-                    const size = file.isFile() ? stats.size : '--';
+                        ? chalk.blue(file.name)
+                        : file.name;
     
-                    // Add a line to the output
-                    console.log(`${lastModifiedTime}    ${chalk.gray(type)}    ${fileName}    ${size}`)
+                    // Add a line to the data output
+                    dataOutput.push({lastModified, type, size, fileName});
                 }
+
+                // Title
+                console.log(`\nContent of ${info(absolutePath)} :\n`)
+
+                // Table head
+                console.log(`Date              Type  ${'Size'.padStart(longestSize)}  Name`);
+                console.log(`----              ----  ${'----'.padStart(longestSize)}  ----`);
+
+                // Data output
+                dataOutput.forEach((item) => {
+                    console.log(
+                        `${item.lastModified}  ` +
+                        `${chalk.gray(item.type)}  ` +
+                        `${item.size.padStart(longestSize < 4 ? 4 : longestSize)}  ` +
+                        `${item.fileName}`
+                    );
+                });
             }
         }
         catch (err){
