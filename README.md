@@ -17,7 +17,7 @@ listdir /directory/path
 ```
 
 ## Example
-![output_example](resources/screenshot.png)
+![output_example](https://github.com/soniiix/nodejs-dir-list/blob/main/resources/screenshot.png?raw=true)
 
 ## Useful links
 - [NPM page](https://www.npmjs.com/package/@soniix/listdir)
