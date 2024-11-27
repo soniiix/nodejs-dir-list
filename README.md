@@ -7,7 +7,7 @@
 ## Install
 Make sure you have Node.js installed and run the following command :
 ```bash
-npm install @soniix/listdir
+npm install -g @soniix/listdir
 ```
 
 ## Usage
