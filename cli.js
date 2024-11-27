@@ -35,15 +35,13 @@ else {
                 console.log(warning("Warning: The specified directory is empty."))
             }
             else {
-                let longestFile = 0;
                 let longestSize = 0;
                 let dataOutput = []
 
                 for (const file of files){
                     const stats = await stat(path.join(absolutePath, file.name))
 
-                    // Adjust columns width according to the longest values
-                    longestFile =  Math.max(longestFile, file.name.length);
+                    // Adjust size column width according to the longest value
                     longestSize =  Math.max(longestSize, stats.size.toString().length);
 
                     // Retrieve data for each file
