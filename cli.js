@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { abort, argv } from 'node:process';
+import { argv } from 'node:process';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
