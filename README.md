@@ -15,6 +15,10 @@ Once installed, use the ``listdir`` command followed by the directory path :
 ```bash
 listdir /directory/path
 ```
+If no directory path is provided, the current directory will be listed :
+```bash
+listdir
+```
 
 ## Example
 ![output_example](https://github.com/soniiix/nodejs-dir-list/blob/main/resources/screenshot.png?raw=true)
