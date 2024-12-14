@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { argv } from 'node:process';
+import { abort, argv } from 'node:process';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
@@ -12,14 +12,13 @@ const warning = chalk.yellow.bold;
 const info = chalk.blue.bold.underline;
 
 // Check path argument
-if (argv.length != 3){
-    argv.length < 3
-        ? console.error(error("Error: Missing path argument. Please provide a directory path."))
-        : console.error(error("Error: Too many arguments provided. Only one directory path expected."));
+if (argv.length > 3){
+    console.error(error("Error: Too many arguments provided. Only one directory path expected."));
     process.exit(1);
 }
 
-const relativePath = argv[2];
+// Take the provided path if specified, or the current directory
+const relativePath = argv.length == 3 ? argv[2] : "./";
 const absolutePath = path.resolve(process.cwd(), relativePath);
 
 // Check if the provided path is valid.
