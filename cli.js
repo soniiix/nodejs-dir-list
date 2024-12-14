@@ -68,8 +68,6 @@ try {
         dataOutput.push({lastModified, type, size, fileName});
     }
 
-    console.log(longestSize)
-
     // Title
     console.log(`\nContent of ${info(absolutePath)} :\n`);
 
