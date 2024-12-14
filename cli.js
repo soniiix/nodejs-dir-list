@@ -5,6 +5,7 @@ import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
 import chalk from 'chalk';
+import { formatSize } from './format-size.js'
 
 // Chalk custom variables
 const error = chalk.red.bold;
@@ -45,7 +46,7 @@ try {
         const stats = await stat(path.join(absolutePath, file.name));
 
         // Adjust size column width according to the longest value
-        longestSize =  Math.max(longestSize, stats.size.toString().length);
+        longestSize =  Math.max(longestSize, formatSize(stats.size).length);
 
         // Retrieve data for each file
         const lastModified = new Date(stats.mtime).toLocaleString([], {
@@ -56,7 +57,9 @@ try {
             "minute": "2-digit"
         });
         const type = file.isDirectory() ? "DIR." : "FILE";
-        const size = file.isFile() ? stats.size.toString() : '-';
+        const size = file.isFile()
+            ? formatSize(stats.size)
+            : '-';
         const fileName = file.isDirectory()
             ? chalk.blue(file.name)
             : file.name;
@@ -64,6 +67,8 @@ try {
         // Add to the data output
         dataOutput.push({lastModified, type, size, fileName});
     }
+
+    console.log(longestSize)
 
     // Title
     console.log(`\nContent of ${info(absolutePath)} :\n`);
