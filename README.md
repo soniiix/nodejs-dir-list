@@ -21,6 +21,8 @@ listdir
 ```
 
 ## Example
+Here is an example of the `listdir` command output :
+
 ![output_example](https://github.com/soniiix/nodejs-dir-list/blob/main/resources/screenshot.png?raw=true)
 
 ## Useful links
