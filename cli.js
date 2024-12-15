@@ -12,14 +12,8 @@ const error = chalk.red.bold;
 const warning = chalk.yellow.bold;
 const info = chalk.blue.bold.underline;
 
-// Check path argument
-if (argv.length > 3){
-    console.error(error("Error: Too many arguments provided. Only one directory path expected."));
-    process.exit(1);
-}
-
 // Take the provided path if specified, or the current directory
-const relativePath = argv.length == 3 ? argv[2] : "./";
+const relativePath = argv.length >= 3 ? argv.slice(2).join(' ') : "./";
 const absolutePath = path.resolve(process.cwd(), relativePath);
 
 // Check if the provided path is valid.
