@@ -20,6 +20,20 @@ If no directory path is provided, the current directory will be listed :
 listdir
 ```
 
+### Options
+
+You can choose to show all files including hidden files using the `-a` option :
+
+```bash
+listdir -a /directory/path
+```
+
+This will also work :
+
+```bash
+listdir /directory/path -a
+```
+
 ## Example
 Here is an example of the `listdir` command output :
 
