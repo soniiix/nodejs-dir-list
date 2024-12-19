@@ -6,14 +6,26 @@ import { existsSync } from 'node:fs';
 import { readdir, stat } from 'node:fs/promises';
 import chalk from 'chalk';
 import { formatSize } from './format-size.js'
+let args = argv
 
 // Chalk custom variables
 const error = chalk.red.bold;
 const warning = chalk.yellow.bold;
 const info = chalk.blue.bold.underline;
 
-// Take the provided path if specified, or the current directory
-const relativePath = argv.length >= 3 ? argv.slice(2).join(' ') : "./";
+// Take the provided path if specified, or the current directory if not
+let relativePath = "./";
+let showAll = false
+if (args.length >= 3){
+    // Check if the '-a' param is specified
+    showAll = (args.at(2) == "-a") || (args.at(args.length - 1) == "-a")
+
+    if (showAll){
+        // Remove '-a' from args list
+        args = args.filter(arg => arg != "-a")
+    }
+    relativePath = args.slice(2).join(' ')
+}
 const absolutePath = path.resolve(process.cwd(), relativePath);
 
 // Check if the provided path is valid.
@@ -24,13 +36,18 @@ if (!existsSync(absolutePath)){
 
 // Main process
 try {
-    const files = await readdir(absolutePath, {
+    let files = await readdir(absolutePath, {
         withFileTypes: true
     });
 
     if (files.length == 0){
         console.log(warning("Warning: The specified directory is empty."));
         process.exit(0);
+    }
+
+    // Remove the hidden files if '-a' is not specified
+    if (!showAll){
+        files = files.filter(file => !file.name.startsWith('.'))
     }
 
     let longestSize = 0;
