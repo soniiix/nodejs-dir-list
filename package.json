@@ -10,6 +10,10 @@
     "ls",
     "file"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soniiix/nodejs-listdir.git"
+  },
   "main": "cli.js",
   "type": "module",
   "bin": {
