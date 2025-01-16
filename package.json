@@ -2,6 +2,14 @@
   "name": "@soniix/listdir",
   "version": "1.0.7",
   "description": "A command line tool to list everything in a specified directory.",
+  "keywords": [
+    "listdir",
+    "list",
+    "directory",
+    "folder",
+    "ls",
+    "file"
+  ],
   "main": "cli.js",
   "type": "module",
   "bin": {
